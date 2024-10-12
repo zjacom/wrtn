@@ -1,0 +1,54 @@
+# Dockerfile
+FROM python:3.12-slim
+
+# Poetry 설치를 위한 환경 변수 설정
+ENV POETRY_VERSION=1.6.1
+
+# 시스템 패키지 설치 및 Playwright에 필요한 패키지 설치
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    fonts-liberation \
+    libgbm-dev \
+    libpangocairo-1.0-0 \
+    libpangoft2-1.0-0 \
+    libdbus-1-3 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libxkbcommon0 \
+    libatspi2.0-0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    && curl -sSL https://install.python-poetry.org | python3 - \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Poetry가 시스템 PATH에 추가되도록 설정
+ENV PATH="/root/.local/bin:$PATH"
+
+# 파이썬 버퍼링
+ENV PYTHONUNBUFFERED=1
+
+# Playwright 환경 변수 설정 (브라우저 다운로드 활성화)
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=0
+
+# 프로젝트 작업 디렉토리 생성
+WORKDIR /wrtn
+
+# `pyproject.toml` 및 `poetry.lock` 복사
+COPY pyproject.toml poetry.lock ./
+
+# 의존성 설치
+RUN poetry install --no-root
+
+# Playwright 브라우저 설치
+RUN poetry run python -m playwright install
+
+# `app` 디렉터리 전체를 컨테이너 내의 `/wrtn`으로 복사
+COPY app/ ./app

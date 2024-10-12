@@ -1,0 +1,305 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: "mysqladmin ping -h 127.0.0.1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  init-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: init-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    network_mode: "host"
+    command: poetry run python /app/prev_init.py
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract1-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract1-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 1"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract2-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract2-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 2"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract3-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract3-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 3"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract4-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract4-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 4"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract5-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract5-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 5"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract6-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract6-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 6"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract7-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract7-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 7"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract8-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract8-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 8"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract9-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract9-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 9"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  extract10-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: extract10-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - init-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/init_done && poetry run python /app/extract.py 10"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+  load-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: load-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - extract1-app
+      - extract2-app
+      - extract3-app
+      - extract4-app
+      - extract5-app
+      - extract6-app
+      - extract7-app
+      - extract8-app
+      - extract9-app
+      - extract10-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/extract-1 && python /app/wait.py /done/extract-2 && python /app/wait.py /done/extract-3 && python /app/wait.py /done/extract-4 && python /app/wait.py /done/extract-5 && python /app/wait.py /done/extract-6 && python /app/wait.py /done/extract-7 && python /app/wait.py /done/extract-8 && python /app/wait.py /done/extract-9 && python /app/wait.py /done/extract-10 && poetry run python /app/transform_load.py"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+    ports:
+      - "5000:5000"
+
+  test-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: test-app
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    depends_on:
+      - load-app
+      - mysql-db
+    command: sh -c "python /app/wait.py /done/load-done && poetry run python /app/test.py"
+    network_mode: "host"
+    volumes:
+      - ./app:/app
+      - ./done:/done
+      - ./temp:/temp
+
+volumes:
+  mysql-data:
