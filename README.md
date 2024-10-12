@@ -24,3 +24,5 @@
 4. 데이터는 MySQL `test_db` 데이터베이스에 저장됩니다.
     - MySQL 접속 명령어: `mysql -h 127.0.0.1 -P 3307 -u root -p`
     - MySQL 비밀번호: `password`
+    - 테이블 정보 및 관계
+    <img width="552" alt="스크린샷 2024-10-12 오후 8 24 22" src="https://github.com/user-attachments/assets/c3645188-0ecc-44e9-8fe5-fd7cd1f0bb46">
